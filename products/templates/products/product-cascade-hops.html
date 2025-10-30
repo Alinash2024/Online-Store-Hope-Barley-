@@ -1,0 +1,130 @@
+<!-- products/templates/products/product-cascade-hops.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Cascade Hops | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="page-product">
+  <div class="container">
+    <!-- Product Info Section -->
+    <section class="product-details-section">
+      <div class="product-image-container">
+        <img src="{% static 'img/products/cascade_hops.jpg' %}" alt="Cascade Hops" class="product-image">
+      </div>
+      <div class="product-info-column">
+        <div class="product-title-price">
+          <h1 class="product-name">Cascade Hops</h1>
+          <div class="price-section">
+            <span class="price-tag">per 100g</span>
+            <p class="product-price">$7.49</p>
+          </div>
+        </div>
+        <div class="product-description">
+          <p>Cascade is arguably the most famous hop in the American craft brewing revolution. Developed in Oregon, it has a unique floral and citrus character that defined the taste of the classic American Pale Ale.</p>
+          <p>Its moderate bitterness and vibrant aroma, with notes of grapefruit, orange, and light floral undertones, make it incredibly versatile. Cascade is excellent for both bittering and late kettle additions or for dry hopping.</p>
+          <p>This hop is a reliable choice for brewers looking to create a refreshing, balanced, and recognizable ale.</p>
+        </div>
+        <div class="cart-controls">
+          <button class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Add to Cart</span>
+          </button>
+          <div class="quantity-counter is-hidden" id="quantity-counter">
+            <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+            <span class="quantity-value">1 in cart</span>
+            <button class="quantity-btn" data-action="increase" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Accordion -->
+    <section class="accordion-section">
+      <div class="accordion-item">
+        <div class="accordion-title">
+          <h3>Technical Specifications</h3>
+          <i class="fa-solid fa-chevron-down accordion-icon"></i>
+        </div>
+        <div class="accordion-content">
+          <ul>
+            <li><strong>Origin:</strong> USA</li>
+            <li><strong>Type:</strong> Aroma (Dual-Purpose)</li>
+            <li><strong>Alpha Acids:</strong> 4.5% - 7.0%</li>
+            <li><strong>Beta Acids:</strong> 4.5% - 7.0%</li>
+            <li><strong>Aroma Profile:</strong> Medium-intensity floral, citrus (grapefruit), and spicy notes.</li>
+            <li><strong>Cohumulone:</strong> 33% - 40%</li>
+            <li><strong>Total Oil:</strong> 0.8 - 1.5 mL/100g</li>
+            <li><strong>Recommended Beer Styles:</strong> American Pale Ale, IPA, Porter, Barleywine, Witbier</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Reviews Section -->
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <h2 class="reviews-title">Latest Reviews</h2>
+      </div>
+
+      <!-- Кнопка "Leave review" теперь отдельно под заголовком -->
+      <div class="reviews-actions">
+        {% if user.is_authenticated %}
+          <a href="{% url 'reviews:add_review' 2 %}" class="button button--primary button--short">
+              <i class="fa-solid fa-pencil"></i>
+              <span>Leave review</span>
+          </a>
+        {% else %}
+          <a href="{% url 'users:login' %}?next={{ request.path }}" class="button button--primary button--short button--feedback">Log in to review</a>
+        {% endif %}
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review Card 1 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">The Classic APA Hop</h4>
+            <p class="review-text">If you're brewing an American Pale Ale, you simply have to use Cascade. It's a classic. Bright, citrusy, refreshing. Never fails. Opens up beautifully on the dry hop.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar8.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">PaleAlePete</span>
+          </div>
+        </div>
+        <!-- Review Card 2 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">My Go-To Aroma Hop</h4>
+            <p class="review-text">I add Cascade to almost all of my light ales for aroma. It gives the beer that signature character everyone loves. The fresh harvest smells absolutely divine!</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar9.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">AromaAddict</span>
+          </div>
+        </div>
+        <!-- Review Card 3 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">Solid and Dependable</h4>
+            <p class="review-text">A good, reliable hop. Not as "explosive" as Citra or Mosaic, but for a balanced beer, it's just what you need. Sometimes the alpha acids are on the lower end, so check the batch specs. Otherwise, excellent.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar10.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">BrewAnalyst</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

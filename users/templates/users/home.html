@@ -1,0 +1,244 @@
+ <!-- users/templates/users/home.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Каталог товаров | Hop & Barley{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero-banner">
+        <img src="{% static 'img/background/hopfen-fields.jpg' %}" alt="Beautiful hops on a dark background" class="hero-banner__image">
+        <div class="hero-banner__overlay"></div>
+    </section>
+
+    <div class="container main-content-grid">
+        <aside class="sidebar filter-menu">
+            <div class="sidebar__section">
+                <h3 class="section-title">Keywords</h3>
+                <div class="keywords-list">
+                </div>
+            </div>
+
+            <div class="sidebar__section">
+                <h3 class="section-title">Product Type</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-container">Hops
+                        <input type="checkbox" data-keyword="Hops" {% if selected_category == 'Hops' %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container">Malts
+                        <input type="checkbox" data-keyword="Malts" {% if selected_category == 'Malts' %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container">Yeast
+                        <input type="checkbox" data-keyword="Yeast" {% if selected_category == 'Yeast' %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container">Adjuncts
+                        <input type="checkbox" data-keyword="Adjuncts" {% if selected_category == 'Adjuncts' %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Фильтр по цене -->
+            <div class="sidebar__section">
+                <h3 class="section-title">Price Range</h3>
+                <form method="GET" id="price-filter-form">
+                    <input type="hidden" name="search" value="{{ search_query|default:'' }}">
+                    <input type="hidden" name="category" value="{{ selected_category|default:'' }}">
+                    <input type="hidden" name="sort" value="{{ sort_by|default:'created_at' }}">
+
+                    <div class="price-filter-inputs">
+                        <input type="number" name="min_price" placeholder="Min Price" value="{{ min_price|default:'' }}" step="0.01" min="0">
+                        <input type="number" name="max_price" placeholder="Max Price" value="{{ max_price|default:'' }}" step="0.01" min="0">
+                        <button type="submit" class="button button--secondary">Apply</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Фильтр по наличию -->
+            <div class="sidebar__section">
+                <h3 class="section-title">Availability</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-container">In Stock
+                        <input type="checkbox" name="in_stock" {% if in_stock %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <section class="products-area product-grid-section">
+            <div class="search-sort-bar">
+                <div class="search-input-wrapper">
+                    <form method="GET" id="search-form">
+                        <input type="text" name="search" placeholder="Search" class="search-input" value="{{ search_query|default:'' }}">
+                        <input type="hidden" name="category" value="{{ selected_category|default:'' }}">
+                        <input type="hidden" name="min_price" value="{{ min_price|default:'' }}">
+                        <input type="hidden" name="max_price" value="{{ max_price|default:'' }}">
+                        <input type="hidden" name="in_stock" value="{{ in_stock|yesno:'on,' }}">
+                        <input type="hidden" name="sort" value="{{ sort_by|default:'created_at' }}">
+                        <button class="search-button" aria-label="Search" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="sort-options">
+                    <form method="GET" id="sort-form">
+                        <input type="hidden" name="search" value="{{ search_query|default:'' }}">
+                        <input type="hidden" name="category" value="{{ selected_category|default:'' }}">
+                        <input type="hidden" name="min_price" value="{{ min_price|default:'' }}">
+                        <input type="hidden" name="max_price" value="{{ max_price|default:'' }}">
+                        <input type="hidden" name="in_stock" value="{{ in_stock|yesno:'on,' }}">
+
+                        <!-- Сортировка: кнопки горизонтально -->
+                        <button type="button" data-sort-value="created_at"
+                                class="sort-button {% if sort_by == 'created_at' %}active-sort{% endif %}">
+                            New
+                        </button>
+                        <button type="button" data-sort-value="price_asc"
+                                class="sort-button {% if sort_by == 'price_asc' %}active-sort{% endif %}">
+                            Price ascending
+                        </button>
+                        <button type="button" data-sort-value="price_desc"
+                                class="sort-button {% if sort_by == 'price_desc' %}active-sort{% endif %}">
+                            Price descending
+                        </button>
+                        <button type="button" data-sort-value="popularity"
+                                class="sort-button {% if sort_by == 'popularity' %}active-sort{% endif %}">
+                            Rating
+                        </button>
+                        <button type="button" data-sort-value="stock"
+                                class="sort-button {% if sort_by == 'stock' %}active-sort{% endif %}">
+                            Stock
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products %}
+                <!-- Product Card -->
+                <div class="product-card">
+                    <a href="{% url 'products:detail' product.id %}" class="product-card-link">
+                        {% if product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-card__image">
+                        {% else %}
+                            <img src="{% static 'img/products/ipa_kit.jpg' %}" alt="{{ product.name }}" class="product-card__image">
+                        {% endif %}
+                        <div class="product-card__info">
+                            <h4 class="product-card__name">{{ product.name }}</h4>
+                            <p class="product-card__price">${{ product.price }}</p>
+                            <p class="product-card__description">{{ product.description|truncatewords:10 }}</p>
+                            {% if product.stock == 0 %}
+                                <span class="product-card__stock out-of-stock">Out of Stock</span>
+                            {% elif product.stock < 5 %}
+                                <span class="product-card__stock low-stock">Only {{ product.stock }} left</span>
+                            {% else %}
+                                <span class="product-card__stock in-stock">{{ product.stock }} in stock</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <p>No products available.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Пагинация в стиле Products -->
+            {% if products.has_other_pages %}
+            <div class="account-pagination">
+                {% if products.has_previous %}
+                  {% if request.GET %}
+                    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}" class="pagination-link-account">← Previous</a>
+                  {% else %}
+                    <a href="?page={{ products.previous_page_number }}" class="pagination-link-account">← Previous</a>
+                  {% endif %}
+                {% else %}
+                  <a class="pagination-link-account disabled">← Previous</a>
+                {% endif %}
+
+                <div class="pagination-pages">
+                  {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                      <a class="pagination-link-account active">{{ num }}</a>
+                    {% else %}
+                      {% if request.GET %}
+                        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}" class="pagination-link-account">{{ num }}</a>
+                      {% else %}
+                        <a href="?page={{ num }}" class="pagination-link-account">{{ num }}</a>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+
+                <span class="pagination-info">
+                  Page {{ products.number }} of {{ products.paginator.num_pages }}
+                </span>
+
+                {% if products.has_next %}
+                  {% if request.GET %}
+                    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}" class="pagination-link-account">Next →</a>
+                  {% else %}
+                    <a href="?page={{ products.next_page_number }}" class="pagination-link-account">Next →</a>
+                  {% endif %}
+                {% else %}
+                  <a class="pagination-link-account disabled">Next →</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+
+<script>
+// Обработчик для сортировки
+document.addEventListener('DOMContentLoaded', function() {
+    const sortButtons = document.querySelectorAll('.sort-button');
+    sortButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const sortValue = this.getAttribute('data-sort-value');
+            const url = new URL(window.location);
+            url.searchParams.set('sort', sortValue);
+            url.searchParams.delete('page'); // Сброс страницы при сортировке
+            window.location.href = url.toString();
+        });
+    });
+
+    // Обработчик для чекбоксов категорий
+    const categoryCheckboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"][data-keyword]');
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const category = this.getAttribute('data-keyword');
+            const url = new URL(window.location);
+
+            if (this.checked) {
+                url.searchParams.set('category', category);
+            } else {
+                url.searchParams.delete('category');
+            }
+
+            url.searchParams.delete('page'); // Сброс страницы при изменении фильтра
+            window.location.href = url.toString();
+        });
+    });
+
+    // Обработчик для чекбокса "In Stock"
+    const inStockCheckbox = document.querySelector('input[name="in_stock"]');
+    if (inStockCheckbox) {
+        inStockCheckbox.addEventListener('change', function() {
+            const url = new URL(window.location);
+            if (this.checked) {
+                url.searchParams.set('in_stock', 'on');
+            } else {
+                url.searchParams.delete('in_stock');
+            }
+            url.searchParams.delete('page'); // Сброс страницы
+            window.location.href = url.toString();
+        });
+    }
+});
+</script>
+{% endblock %}

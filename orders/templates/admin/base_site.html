@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+    {% if user.is_active and user.is_staff %}
+        <div id="user-tools">
+            Welcome, <strong>{{ user.get_full_name|default:user.get_username }}</strong>.
+            <a href="{% url 'admin:orders_order_orders-analytics' %}" target="_blank">📊 Orders Analytics</a> |
+            <a href="{% url 'admin:logout' %}">Log out</a>
+        </div>
+    {% endif %}
+{% endblock %}

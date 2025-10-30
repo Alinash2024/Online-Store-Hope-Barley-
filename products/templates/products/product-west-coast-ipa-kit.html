@@ -1,0 +1,110 @@
+<!-- products/templates/products/product-west-coast-ipa-kit.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}West Coast IPA - All-Grain Kit | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="page-product">
+  <div class="container">
+    <!-- Product Info Section -->
+    <section class="product-details-section">
+      <div class="product-image-container">
+        <img src="{% static 'img/products/ipa_kit.jpg' %}" alt="West Coast IPA - All-Grain Kit" class="product-image">
+      </div>
+      <div class="product-info-column">
+        <div class="product-title-price">
+          <h1 class="product-name">West Coast IPA - All-Grain Kit</h1>
+          <div class="price-section">
+            <span class="price-tag">for 5 Gallons</span>
+            <p class="product-price">${{ product.price }}</p>
+          </div>
+        </div>
+        <div class="product-description">
+          <p>Brew a craft brewing classic with our "West Coast IPA - All-Grain Kit"! This kit contains all the necessary ingredients to create a bright, bitter, and incredibly aromatic IPA in the style of the US West Coast.</p>
+          <p>We've selected the perfect combination of malts to achieve a clean, dry body that serves as an excellent base for a hop explosion. The kit includes a powerful combination of Centennial, Simcoe, and Columbus hops, which provide a burst of citrus, pine, and resinous notes characteristic of this style.</p>
+          <p>This kit is your ticket to the world of true West Coast IPA. It comes with detailed step-by-step instructions to guide you through every stage, from mashing to bottling.</p>
+        </div>
+
+        <!-- Cart Controls -->
+        <div class="cart-controls">
+          <button class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Add to Cart</span>
+          </button>
+          <div class="quantity-counter is-hidden" id="quantity-counter">
+            <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+            <span class="quantity-value">1 in cart</span>
+            <button class="quantity-btn" data-action="increase" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Accordion -->
+    <section class="accordion-section">
+      <div class="accordion-item">
+        <div class="accordion-title">
+          <h3>Technical Specifications</h3>
+          <i class="fa-solid fa-chevron-down accordion-icon"></i>
+        </div>
+        <div class="accordion-content">
+          <ul>
+            <li><strong>Style:</strong> West Coast IPA</li>
+            <li><strong>Yield:</strong> 5 Gallons</li>
+            <li><strong>Ingredients:</strong> Pale Malt, Caramel Malt, Centennial Hops, Simcoe Hops, Columbus Hops</li>
+            <li><strong>Recommended Yeast:</strong> SafAle US-05 or similar American Ale Yeast</li>
+            <li><strong>Original Gravity (OG):</strong> 1.060 - 1.070</li>
+            <li><strong>Final Gravity (FG):</strong> 1.012 - 1.016</li>
+            <li><strong>ABV:</strong> 6.5% - 7.5%</li>
+            <li><strong>IBU:</strong> 60 - 80</li>
+            <li><strong>Color:</strong> 6 - 8 SRM</li>
+            <li><strong>Flavor Profile:</strong> Bright citrus, pine, grapefruit, resinous, medium bitterness</li>
+            <li><strong>Instructions:</strong> Includes full recipe and step-by-step brewing guide</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Reviews Section -->
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <h2 class="reviews-title">Latest Reviews</h2>
+      </div>
+
+      <!-- Кнопка "Leave review" теперь отдельно под заголовком -->
+      <div class="reviews-actions">
+        {% if user.is_authenticated %}
+          <a href="{% url 'reviews:add_review' 13 %}" class="button button--primary button--short">
+            <i class="fa-solid fa-pencil"></i>
+            <span>Leave review</span>
+          </a>
+        {% else %}
+          <a href="{% url 'users:login' %}?next={{ request.path }}" class="button button--primary button--short button--feedback">Log in to review</a>
+        {% endif %}
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review Card 1 -->
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-author">John D.</div>
+            <div class="review-date">October 10, 2025</div>
+          </div>
+          <div class="review-body">
+            <p>Excellent kit! Everything was well-packaged and easy to follow. The beer turned out exactly like I expected — crisp, hoppy, and balanced. Highly recommend!</p>
+          </div>
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}
