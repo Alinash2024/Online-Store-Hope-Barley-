@@ -1,0 +1,92 @@
+<!-- products/templates/products/product_detail.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="page-product">
+  <div class="container">
+    <!-- Product Info Section -->
+    <section class="product-details-section">
+      <div class="product-image-container">
+        {% if product.image_url %}
+          <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+        {% else %}
+          <img src="{% static 'img/products/default.jpg' %}" alt="{{ product.name }}" class="product-image">
+        {% endif %}
+      </div>
+      <div class="product-info-column">
+        <div class="product-title-price">
+          <h1 class="product-name">{{ product.name }}</h1>
+          <div class="price-section">
+            <span class="price-tag">per {{ product.unit|default:"item" }}</span>
+            <p class="product-price">${{ product.price }}</p>
+          </div>
+        </div>
+        <div class="product-description">
+          <p>{{ product.description|linebreaks }}</p>
+        </div>
+
+        <!-- Product Meta Information -->
+        <div class="product-meta" style="display: flex; flex-direction: column; gap: 8px;">
+          <p><strong>Category:</strong> {{ product.category|default:"Not specified" }}</p>
+          <p><strong>Stock:</strong>
+            <span class="{% if product.stock == 0 %}text-danger{% elif product.stock < 5 %}text-warning{% else %}text-success{% endif %}">
+              {{ product.stock }} {{ product.unit|default:"items" }} available
+            </span>
+          </p>
+          <p><strong>Status:</strong>
+            {% if product.is_active %}
+              <span class="text-success">Available</span>
+            {% else %}
+              <span class="text-danger">Not available</span>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Cart Controls -->
+        <div class="cart-controls">
+          {% if product.is_in_stock %}
+            <form method="post" action="{% url 'orders:cart_add' %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Add to Cart</span>
+              </button>
+              <div class="quantity-counter is-hidden" id="quantity-counter">
+                <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity" type="button">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <span class="quantity-value">1 in cart</span>
+                <button class="quantity-btn" data-action="increase" aria-label="Increase quantity" type="button">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </form>
+          {% else %}
+            <button class="button button--secondary" disabled>
+              Out of Stock
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    {% if user.is_authenticated %}
+    <div class="admin-actions" style="margin-top: 20px;">
+      <a href="{% url 'products:edit' product.pk %}" class="button button--secondary">Edit Product</a>
+      <form method="post" action="{% url 'products:delete' product.pk %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="button button--danger"
+                onclick="return confirm('Are you sure you want to delete this product?')">
+          Delete Product
+        </button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}
