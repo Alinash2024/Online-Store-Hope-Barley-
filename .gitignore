@@ -2,7 +2,7 @@
 .idea
 .env
 .env.local
-*/__pycache__/
+**/__pycache__/
 db.sqlite3
 static
 
