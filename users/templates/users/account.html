@@ -1,0 +1,179 @@
+<!-- users/templates/users/account.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}My Account | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="account-page-wrapper">
+  <div class="account-container">
+    <!-- Tabs Navigation -->
+    <div class="account-tabs">
+      <button class="account-tab active" data-tab-target="#order-history">Order History</button>
+      <button class="account-tab" data-tab-target="#cart-items">Shopping Cart</button>
+      <button class="account-tab" data-tab-target="#account-info">Account Information</button>
+      <button class="account-tab" data-tab-target="#change-password">Change Password</button>
+    </div>
+
+    <!-- Tabs Content -->
+    <div class="tab-content">
+      <!-- Order History Panel -->
+      <div id="order-history" class="tab-pane active">
+        <div class="order-history-table">
+          <!-- Table Header -->
+          <div class="order-table-header">
+            <div class="order-table-cell">Order Details</div>
+            <div class="order-table-cell">Order Status</div>
+            <div class="order-table-cell">Total</div>
+          </div>
+          <!-- Table Body -->
+          <div class="order-table-body">
+            {% for order in orders %}
+            <div class="order-table-row">
+              <div class="order-table-cell">
+                <span class="order-id">#{{ order.id }}</span>
+                <span class="order-date">{{ order.created_at|date:"d M Y" }}</span>
+              </div>
+              <div class="order-table-cell">
+                <span class="order-status">{{ order.get_status_display }}</span>
+              </div>
+              <div class="order-table-cell">
+                <span class="order-total">${{ order.total_price }}</span>
+              </div>
+            </div>
+            {% empty %}
+            <div class="order-table-row">
+              <div class="order-table-cell empty-message" style="grid-column: 1 / -1; text-align: center;">
+                <p>You have no orders yet.</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        {% if orders.has_other_pages %}
+        <div class="account-pagination">
+          {% if orders.has_previous %}
+            <a href="?page={{ orders.previous_page_number }}" class="pagination-link-account">← Previous</a>
+          {% else %}
+            <a class="pagination-link-account disabled">← Previous</a>
+          {% endif %}
+
+          <span class="pagination-info">
+            Page {{ orders.number }} of {{ orders.paginator.num_pages }}
+          </span>
+
+          {% if orders.has_next %}
+            <a href="?page={{ orders.next_page_number }}" class="pagination-link-account">Next →</a>
+          {% else %}
+            <a class="pagination-link-account disabled">Next →</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Shopping Cart Panel -->
+      <div id="cart-items" class="tab-pane">
+        <h2 class="account-form-title">Your Shopping Cart</h2>
+        <div class="cart-items-list">
+          {% for item in cart %}
+          <div class="cart-item">
+            <!-- Используем item.product для доступа к объекту продукта -->
+            <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}"
+                 alt="{{ item.product.name }}" class="cart-item__image">
+            <div class="cart-item__body">
+              <div class="cart-item__details">
+                <h3 class="cart-item__name">{{ item.product.name }}</h3>
+                <div class="cart-item__price-info">
+                  <p class="cart-item__price">${{ item.price }}</p>
+                  <span class="cart-item__quantity">Quantity: {{ item.quantity }}</span>
+                </div>
+                <p class="cart-item__total">Total: ${{ item.total_price|floatformat:2 }}</p>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <p style="text-align: center; grid-column: 1 / -1;">Your cart is empty.</p>
+          <a href="{% url 'users:home' %}" class="button button--primary">Continue Shopping</a>
+          {% endfor %}
+        </div>
+
+        {% if cart %}
+        <div class="cart-summary">
+          <div class="cart-summary__total">
+            <p><strong>Cart Total: ${{ cart.get_total_price|floatformat:2 }}</strong></p>
+          </div>
+          <div class="cart-actions">
+            <a href="{% url 'orders:cart_detail' %}" class="button button--primary">View Cart Details</a>
+            <a href="{% url 'orders:checkout' %}" class="button button--secondary">Proceed to Checkout</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Account Information Panel -->
+      <div id="account-info" class="tab-pane">
+        <div class="account-form-container">
+          <h2 class="account-form-title">Personal Info</h2>
+          <form id="account-info-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="save_profile" value="1">
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.first_name.id_for_label }}">First Name</label>
+              {{ profile_form.first_name }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.last_name.id_for_label }}">Last Name</label>
+              {{ profile_form.last_name }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.email.id_for_label }}">Email</label>
+              {{ profile_form.email }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.phone.id_for_label }}">Phone number</label>
+              {{ profile_form.phone }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.city.id_for_label }}">City</label>
+              {{ profile_form.city }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ profile_form.address.id_for_label }}">Shipping address</label>
+              {{ profile_form.address }}
+            </div>
+            <button type="submit" class="button button--primary button--full-width">Save</button>
+            <a href="{% url 'users:logout' %}" class="button button--secondary button--full-width" id="logout-button">Logout</a>
+          </form>
+        </div>
+      </div>
+
+      <!-- Change Password Panel -->
+      <div id="change-password" class="tab-pane">
+        <div class="account-form-container">
+          <h2 class="account-form-title">Change Password</h2>
+          <form id="change-password-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="change_password" value="1">
+            <div class="checkout-form-group">
+              <label for="{{ password_form.old_password.id_for_label }}">Current Password</label>
+              {{ password_form.old_password }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ password_form.new_password1.id_for_label }}">New Password</label>
+              {{ password_form.new_password1 }}
+            </div>
+            <div class="checkout-form-group">
+              <label for="{{ password_form.new_password2.id_for_label }}">Confirm New Password</label>
+              {{ password_form.new_password2 }}
+            </div>
+            <button type="submit" class="button button--primary button--full-width">Change Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
