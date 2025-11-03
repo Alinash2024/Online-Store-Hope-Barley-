@@ -4,7 +4,8 @@ An e-commerce Django application featuring a complete online store with product 
 
 ## Description
 
-Hope & Barley is a full-featured online store solution built with Django. It includes a responsive web interface for customers and a comprehensive REST API for external integrations. The application supports product browsing with advanced filtering, shopping cart management, order processing, user authentication, and administration tools.
+Hope & Barley is a full-featured online store solution built with Django. 
+It includes a responsive web interface for customers and a comprehensive REST API for external integrations. The application supports product browsing with advanced filtering, shopping cart management, order processing, user authentication, and administration tools.
 
 Key features include:
 - Product catalog with search, filters, and pagination
@@ -23,37 +24,31 @@ Key features include:
 - Docker Compose 1.29+
 
 ### Quick Start
-Clone the repository
-git clone https://github.com/Alinash2024/Online-Store-Hope-Barley-.git
-Build and start all services
-docker-compose up
-Apply database migrations
-docker-compose migrate
-Create a superuser (optional)
-docker-compose createsuperuser
-The application will be available at http://localhost:8000
+- Clone the repository git clone https://github.com/Alinash2024/Online-Store-Hope-Barley-.git
+- Build and start all services docker-compose up
+- Apply database migrations docker-compose migrate
+- Create a superuser (optional)docker-compose createsuperuser
+- The application will be available at http://localhost:8000
 ### Environment Configuration
-Create a `.env` file in the project root
-SECRET_KEY=your-secret-key 
-DEBUG=True 
-DATABASE_URL=postgresql://user:password@db:5432/db
-JWT_SECRET_KEY= your-secret-key
+- Create a `.env` file in the project root
+- SECRET_KEY=your-secret-key 
+- DEBUG=True 
+- DATABASE_URL=postgresql://user:password@db:5432/db
+- JWT_SECRET_KEY= your-secret-key
 ### Stopping the Application
-Stop all services
-docker-compose down
-Stop all services and remove volumes
-docker-compose down -v
+- Stop all services docker-compose down
+- Stop all services and remove volumes docker-compose down -v
 ## JWT and API Examples
 ### Authentication
 The API uses JWT tokens for authentication. First, obtain a token:
-curl -X POST http://localhost:8000/api/auth/login/ 
--H "Content-Type: application/json" 
--d '{"username": "your_username", "password": "your_password"}'
-Response:
+- curl -X POST http://localhost:8000/api/auth/login/ 
+- -H "Content-Type: application/json" 
+- -d '{"username": "your_username", "password": "your_password"}'
+- Response:
 json { "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." }
 ### Using the Token
 Include the access token in the Authorization header for protected endpoints:
-curl -X GET http://localhost:8000/api/products/ -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+- curl -X GET http://localhost:8000/api/products/ -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
 ### Common API Endpoints
 #### Products
 - `GET /api/products/` - List all products with filtering options
@@ -77,19 +72,14 @@ Interactive API documentation is available at:
 - Swagger UI: `http://localhost:8000/api/docs/`
 - ReDoc: `http://localhost:8000/api/redoc/`
 ## Running Tests and Linters
-
 ### Tests
-Run the full test suite:
-docker-compose exec web python manage.py test
-Run tests for a specific app:
-docker-compose exec web python manage.py test apps.
+- Run the full test suite: docker-compose exec web python manage.py test
+- Run tests for a specific app: docker-compose exec web python manage.py test apps.
 ### Linters
-Run code quality checks:
-Run flake8
-docker-compose exec web flake8
+- Run code quality checks: docker-compose exec web flake8
+- Run flake8: docker-compose exec web black
 ### Test Coverage
-Generate coverage report:
-docker-compose exec web coverage run --source='.' manage.py test
+- Generate coverage report: docker-compose exec web coverage run --source='.' manage.py test
 ## Project Structure
 
 PythonProject/ 
