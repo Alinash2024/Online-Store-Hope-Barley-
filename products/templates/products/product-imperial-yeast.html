@@ -1,0 +1,130 @@
+<!-- products/templates/products/product-imperial-yeast.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Imperial Organic Yeast A07 | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="page-product">
+  <div class="container">
+    <!-- Product Info Section -->
+    <section class="product-details-section">
+      <div class="product-image-container">
+        <img src="{% static 'img/products/imperial_yeast.jpg' %}" alt="Imperial Organic Yeast A07" class="product-image">
+      </div>
+      <div class="product-info-column">
+        <div class="product-title-price">
+          <h1 class="product-name">Imperial Organic Yeast A07</h1>
+          <div class="price-section">
+            <span class="price-tag">per pouch</span>
+            <p class="product-price">$8.99</p>
+          </div>
+        </div>
+        <div class="product-description">
+          <p>Imperial Organic Yeast A07 "Flagship" is a versatile and extremely popular liquid yeast, known for its ability to create balanced ales with a light fruity character. This strain is a true workhorse and is perfect for most American beer styles.</p>
+          <p>"Flagship" provides a clean fermentation with light ester notes of citrus and stone fruit that complement, rather than overpower, the hop and malt profile. It has good attenuation and moderate flocculation, leaving behind a soft and smooth mouthfeel.</p>
+          <p>Thanks to the high cell count per package (200 billion), this yeast does not require a starter for most standard batches of beer, making it a convenient and reliable choice.</p>
+        </div>
+        <div class="cart-controls">
+          <button class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Add to Cart</span>
+          </button>
+          <div class="quantity-counter is-hidden" id="quantity-counter">
+            <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+            <span class="quantity-value">1 in cart</span>
+            <button class="quantity-btn" data-action="increase" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Accordion -->
+    <section class="accordion-section">
+      <div class="accordion-item">
+        <div class="accordion-title">
+          <h3>Technical Specifications</h3>
+          <i class="fa-solid fa-chevron-down accordion-icon"></i>
+        </div>
+        <div class="accordion-content">
+          <ul>
+            <li><strong>Strain Type:</strong> Ale</li>
+            <li><strong>Flocculation:</strong> Medium</li>
+            <li><strong>Attenuation:</strong> 73-77%</li>
+            <li><strong>Temperature Range:</strong> 62-72°F (17-22°C)</li>
+            <li><strong>Alcohol Tolerance:</strong> 10% ABV</li>
+            <li><strong>Flavor Profile:</strong> Balanced, slightly fruity, hints of citrus and stone fruit.</li>
+            <li><strong>Cell Count:</strong> ~200 Billion Cells</li>
+            <li><strong>Recommended Beer Styles:</strong> American Pale Ale, IPA, Double IPA, Porter, Stout, Amber Ale</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Reviews Section -->
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <h2 class="reviews-title">Latest Reviews</h2>
+      </div>
+
+      <!-- Кнопка "Leave review" теперь отдельно под заголовком -->
+      <div class="reviews-actions">
+        {% if user.is_authenticated %}
+          <a href="{% url 'reviews:add_review' 6 %}" class="button button--primary button--short">
+              <i class="fa-solid fa-pencil"></i>
+              <span>Leave review</span>
+          </a>
+        {% else %}
+          <a href="{% url 'users:login' %}?next={{ request.path }}" class="button button--primary button--short button--feedback">Log in to review</a>
+        {% endif %}
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review Card 1 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">My House Strain!</h4>
+            <p class="review-text">I've tried many yeasts, but I always come back to A07. This is my "house" strain for all American ales. It's reliable, clean, and predictable. And the fact that you don't need a starter saves a ton of time!</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar10.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">HouseStrainGuy</span>
+          </div>
+        </div>
+        <!-- Review Card 2 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">Perfect for Hazy IPAs</h4>
+            <p class="review-text">This yeast works great in NEIPAs. It leaves a bit of body and enhances the fruity notes of the hops, creating that "juicy" flavor. Highly recommend.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar1.jpg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">HazyJane</span>
+          </div>
+        </div>
+        <!-- Review Card 3 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">Great, but temperature sensitive</h4>
+            <p class="review-text">An excellent strain, it fermented my APA to perfection. The only thing is, try to keep the temperature at the lower end of the range. If it gets too warm, it can produce too many esters. But with proper control, the result is superb.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar2.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">TempControlFreak</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

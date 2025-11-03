@@ -1,7 +1,10 @@
 .venv
+.idea/
 .env
 .env.local
-*/__pycache__/
+**/__pycache__/
+*.pyc
 db.sqlite3
-static
-.idea/
+static/
+pytest-cache-files-*/
+.mypy_cache/

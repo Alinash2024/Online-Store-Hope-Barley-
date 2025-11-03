@@ -1,0 +1,130 @@
+<!-- products/templates/products/product-centennial-hops.html -->
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Centennial Hops | Hop & Barley{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="page-product">
+  <div class="container">
+    <!-- Product Info Section -->
+    <section class="product-details-section">
+      <div class="product-image-container">
+        <img src="{% static 'img/products/centennial_hops.jpg' %}" alt="Centennial Hops" class="product-image">
+      </div>
+      <div class="product-info-column">
+        <div class="product-title-price">
+          <h1 class="product-name">Centennial Hops</h1>
+          <div class="price-section">
+            <span class="price-tag">per 100g</span>
+            <p class="product-price">$6.20</p>
+          </div>
+        </div>
+        <div class="product-description">
+          <p>Centennial is a classic American hop often referred to as "Super Cascade" due to its similar citrus profile but with a higher intensity and alpha acid content. It is one of the "Three Cs" (along with Cascade and Columbus) that defined the flavor of American IPAs.</p>
+          <p>The aroma of Centennial is powerful, with bright notes of lemon, grapefruit, and pronounced floral undertones. Unlike Cascade, it is less spicy and more "clean" in its citrus expression. Thanks to its high alpha acid content, it is excellent for both bittering and creating an intense aroma.</p>
+          <p>This is an extremely versatile hop, perfect for American Pale Ales, IPAs, and Double IPAs, giving them a bright and recognizable character.</p>
+        </div>
+        <div class="cart-controls">
+          <button class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Add to Cart</span>
+          </button>
+          <div class="quantity-counter is-hidden" id="quantity-counter">
+            <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+            <span class="quantity-value">1 in cart</span>
+            <button class="quantity-btn" data-action="increase" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Accordion -->
+    <section class="accordion-section">
+      <div class="accordion-item">
+        <div class="accordion-title">
+          <h3>Technical Specifications</h3>
+          <i class="fa-solid fa-chevron-down accordion-icon"></i>
+        </div>
+        <div class="accordion-content">
+          <ul>
+            <li><strong>Origin:</strong> USA</li>
+            <li><strong>Type:</strong> Dual-Purpose</li>
+            <li><strong>Alpha Acids:</strong> 9.0% - 11.5%</li>
+            <li><strong>Beta Acids:</strong> 3.5% - 4.5%</li>
+            <li><strong>Aroma Profile:</strong> Intense floral and citrus (lemon, grapefruit).</li>
+            <li><strong>Cohumulone:</strong> 28% - 30%</li>
+            <li><strong>Total Oil:</strong> 1.5 - 2.5 mL/100g</li>
+            <li><strong>Recommended Beer Styles:</strong> All US Ale styles, especially IPA, Double IPA, and American Pale Ale.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Reviews Section -->
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <h2 class="reviews-title">Latest Reviews</h2>
+      </div>
+
+      <!-- Кнопка "Leave review" теперь отдельно под заголовком -->
+      <div class="reviews-actions">
+        {% if user.is_authenticated %}
+          <a href="{% url 'reviews:add_review' 4 %}" class="button button--primary button--short">
+              <i class="fa-solid fa-pencil"></i>
+              <span>Leave review</span>
+          </a>
+        {% else %}
+          <a href="{% url 'users:login' %}?next={{ request.path }}" class="button button--primary button--short button--feedback">Log in to review</a>
+        {% endif %}
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review Card 1 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">Super Cascade Indeed!</h4>
+            <p class="review-text">The name says it all. It's like Cascade, but better. More citrus, more bitterness, more everything. Perfect for a single-hop IPA. One of my all-time favorite hops.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar3.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">IPA_Fan</span>
+          </div>
+        </div>
+        <!-- Review Card 2 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">Clean Bitterness</h4>
+            <p class="review-text">I use Centennial for the main bittering in my IPAs. It provides a very clean, smooth bitterness without the harshness that can sometimes come from other high-alpha varieties. And the whirlpool aroma is fantastic.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar4.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">BitterIsBetter</span>
+          </div>
+        </div>
+        <!-- Review Card 3 -->
+        <div class="review-card">
+          <div class="review-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <div class="review-body">
+            <h4 class="review-heading">A Classic for a Reason</h4>
+            <p class="review-text">You can't go wrong with Centennial. It's a time-tested, reliable hop. Perfect for a classic West Coast IPA. Always delivers predictable and excellent results.</p>
+          </div>
+          <div class="review-author">
+            <img src="{% static 'img/avatars/avatar5.svg' %}" alt="User avatar" class="author-avatar">
+            <span class="author-name">WestCoastBrewer</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

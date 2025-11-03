@@ -1,0 +1,20 @@
+{% extends "admin/index.html" %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <div class="module">
+        <h2>Аналитика</h2>
+        <ul>
+            <li><a href="{% url 'admin:orders_order_orders-analytics' %}" target="_blank">📊 Аналитика заказов</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    <!-- Кастомный виджет аналитики -->
+    {% if request.user.is_superuser %}
+        {{ orders_analytics_widget(request) }}
+    {% endif %}
+{% endblock %}
